@@ -31,7 +31,7 @@ function checkTo(allowed, requested) {
 	return false;
 }
 
-module.exports = function (options, connectionListener) {
+module.exports = function (options, connectionListener, wsListener) {
 	options = options || {};
 
 	var app = express();
@@ -138,7 +138,7 @@ module.exports = function (options, connectionListener) {
 			});
 		});
 		if (connectionListener) {
-			connectionListener(socket)
+			connectionListener(socket);
 		}
 	});
 
@@ -176,6 +176,8 @@ module.exports = function (options, connectionListener) {
 			socket.end();
 			console.log('Websocket connection closed ('+token+')');
 		});
+
+		wsListener(ws);
 	});
 
 	app.on('mount', function (parentApp) {
